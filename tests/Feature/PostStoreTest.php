@@ -1,6 +1,9 @@
 <?php
 
 use App\Models\User;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+
+uses(RefreshDatabase::class);
 
 it('unauthenticated user cannot create a post', function () {
     $response = $this->post('/posts');
@@ -25,4 +28,12 @@ it('authenticated user can create a post', function () {
         'status' => 'is_published',
     ]);
 });
+
+it('requires title, body and status', function () {
+    $user = User::factory()->create();
+    $this->actingAs($user)->post('/posts')->assertSessionHasErrors([
+        'title', 'body', 'status',
+    ]);
+});
+
 
