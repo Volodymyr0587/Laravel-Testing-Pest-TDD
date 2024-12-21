@@ -17,7 +17,10 @@ class PostFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'user_id' => 1,
+            'title' => $this->faker->sentence(5),
+            'body' => $this->faker->sentence(5),
+            'status' => 'pending',
         ];
     }
 }
