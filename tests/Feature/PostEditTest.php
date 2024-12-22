@@ -32,3 +32,15 @@ it('unauthenticated user cannot visit post edit page', function() {
     $response->assertStatus(302);
 });
 
+it('abort if the user does not own the post', function () {
+    $other_user = User::factory()->create();
+    $post = $this->user->posts()->create([
+        'title' => 'Post Title',
+        'body' => 'Post Body',
+        'status' => 'pending',
+    ]);
+
+    $response = $this->actingAs($other_user)->get("/posts/{$post->id}/edit");
+    $response->assertStatus(403);
+});
+
