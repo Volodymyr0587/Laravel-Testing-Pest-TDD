@@ -37,4 +37,19 @@ class PostController extends Controller
         Gate::authorize('update', $post);
         return view('posts.edit', compact('post'));
     }
+
+    public function update(Request $request, Post $post)
+    {
+        Gate::authorize('update', $post);
+
+        $validated = $request->validate([
+            'title' => 'required',
+            'body' => 'required',
+            'status' => 'required'
+        ]);
+
+        $post->update($validated);
+
+        return to_route('posts.index');
+    }
 }
